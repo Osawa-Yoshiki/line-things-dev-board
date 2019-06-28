@@ -351,13 +351,15 @@ function send2MB(device, buffer){
         data:data,
         headers: {
             "Cookie" : 'tenant=cdl002mb',
-        },
+        }
+    });
         .done((data, textStatus, jqXHR) => {
             onScreenLog('done' +  jqXHR.status);
-        }),
+        })
         .fail((jqXHR, textStatus, errorThrown) => {
             onScreenLog('fail' +  jqXHR.status);
-        })
+        });
+
 /*        success:function (data) {
             onScreenLog(`send success`);
         },
@@ -366,7 +368,7 @@ function send2MB(device, buffer){
             onScreenLog('xhr: ' + xhr.status + ' txt: ' + txt + ' tmsg: ' + tmsg.message);
         }
 */
-    });
+
 }
 
 function notificationCallback(e) {
