@@ -328,7 +328,7 @@ async function stopNotification(characteristic, callback) {
     onScreenLog('Notifications STOPPED　' + characteristic.uuid + ' ' + device.id);
 }
 
-async function send2MB(device, buffer){
+function send2MB(device, buffer){
     //onScreenLog(`send2MB`);
     const temperature = buffer.getInt16(0, true) / 100.0;
     const accelX = buffer.getInt16(2, true) / 1000.0;
@@ -350,9 +350,6 @@ async function send2MB(device, buffer){
         scriptCharset: 'utf-8',
         jsonpCallback:'data',
         data:data,
-        headers: {
-            'Cookie' : 'tenant=cdl002mb'
-        },
         success:function (data) {
             onScreenLog(`send success`);
         },
