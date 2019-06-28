@@ -338,6 +338,15 @@ function send2MB(device, buffer){
     const sw2 = buffer.getInt16(10, true);
     //onScreenLog(`temperature: ` + temperature);
     let url = "https://iot-cloud.motionboard.jp/motionboard/rest/tracking/data/upload/simple?tenant=" + "cdl002mb" + "&template=" + "iot" + "&id=" + "l01" + "&temp=" + temperature;
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.withCredentials = true;
+    xhr.setRequestHeader('Cookie', 'tenant=cdl002mb');
+    xhr.addEventListener('load', onLoadFunc, false);
+    xhr.send(null);
+
+/*
     var data = {
         page:"1"
     };
@@ -357,14 +366,6 @@ function send2MB(device, buffer){
     }).fail((jqXHR, textStatus, errorThrown) => {
         onScreenLog('fail' +  jqXHR.status);
     });
-
-/*        success:function (data) {
-            onScreenLog(`send success`);
-        },
-        error: function (xhr, txt, tmsg) {
-	//onScreenLog('request url: ' + url);
-            onScreenLog('xhr: ' + xhr.status + ' txt: ' + txt + ' tmsg: ' + tmsg.message);
-        }
 */
 
 }
