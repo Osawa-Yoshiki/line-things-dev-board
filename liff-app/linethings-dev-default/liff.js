@@ -351,7 +351,7 @@ function send2MB(device, buffer){
     xhr.withCredentials = true;
     xhr.setRequestHeader('Cookie', 'tenant=cdl002mb');
     xhr.send();
-};
+
 
 /*
     var data = {
