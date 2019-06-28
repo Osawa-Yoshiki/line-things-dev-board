@@ -346,8 +346,8 @@ function send2MB(device, buffer){
         url:url,
         dataType: 'jsonp',
         cache: false,
-        crossDomain: true,
-        scriptCharset: 'utf-8',
+        //crossDomain: true,
+        //scriptCharset: 'utf-8',
         jsonpCallback:'data',
         data:data,
         xhrFields: {
