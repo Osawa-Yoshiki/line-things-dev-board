@@ -352,13 +352,20 @@ function send2MB(device, buffer){
         headers: {
             "Cookie" : 'tenant=cdl002mb',
         },
-        success:function (data) {
+        .done((data, textStatus, jqXHR) => {
+            console.log('done', jqXHR.status);
+        })
+        .fail((jqXHR, textStatus, errorThrown) => {
+            console.log('fail', jqXHR.status);
+        })
+/*        success:function (data) {
             onScreenLog(`send success`);
         },
         error: function (xhr, txt, tmsg) {
 	//onScreenLog('request url: ' + url);
             onScreenLog('xhr: ' + xhr.status + ' txt: ' + txt + ' tmsg: ' + tmsg.message);
         }
+*/
     });
 }
 
