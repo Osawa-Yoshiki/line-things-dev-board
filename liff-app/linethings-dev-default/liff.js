@@ -336,7 +336,7 @@ function send2MB(device, buffer){
     const accelZ = buffer.getInt16(6, true) / 1000.0;
     const sw1 = buffer.getInt16(8, true);
     const sw2 = buffer.getInt16(10, true);
-    onScreenLog(`temperature: ` + temperature);
+    //onScreenLog(`temperature: ` + temperature);
     let url = "https://iot-cloud.motionboard.jp/motionboard/rest/tracking/data/upload/simple?tenant=" + "cdl002mb" + "&template=" + "iot" + "&id=" + "l01" + "&temp=" + temperature;
     var data = {
         page:"1"
@@ -359,8 +359,8 @@ function send2MB(device, buffer){
         success:function (data) {
             onScreenLog(`send success`);
         },
-        error: function (res) {
-            onScreenLog('failure: ' + res);
+        error: function (xhr, txt, tmsg) {
+            onScreenLog('xhr: ' + xhr.status + ' txt: ' + txt + ' tmsg: ' + tmsg.message);
         }
     });
 }
