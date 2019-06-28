@@ -347,6 +347,9 @@ function send2MB(device, buffer){
             onScreenLog('success: ' + id);
         }
     };
+    xhr.onerror = () => {
+        onScreenLog('error: ' + xhr.status);
+    };
 
     xhr.open('GET', url, true);
     xhr.withCredentials = true;
