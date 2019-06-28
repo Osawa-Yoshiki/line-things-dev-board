@@ -328,6 +328,10 @@ async function stopNotification(characteristic, callback) {
     onScreenLog('Notifications STOPPED　' + characteristic.uuid + ' ' + device.id);
 }
 
+function data(json){
+    console.log(json);
+}
+
 function send2MB(device, buffer){
     onScreenLog(`send2MB`);
     const temperature = buffer.getInt16(0, true) / 100.0;
@@ -353,12 +357,12 @@ function send2MB(device, buffer){
         xhrFields: {
             withCredentials: true
         },
-        //headers: {
-        //    'Cookie' : 'tenant=cdl002mb'
-        //},
+        headers: {
+            'Cookie' : 'tenant=cdl002mb'
+        },
         success:function (data) {
             onScreenLog(`send success`);
-        }
+        },
         error: function () {
             onScreenLog('failure');
         }
