@@ -328,10 +328,6 @@ async function stopNotification(characteristic, callback) {
     onScreenLog('Notifications STOPPED　' + characteristic.uuid + ' ' + device.id);
 }
 
-function data(json){
-    console.log(json);
-}
-
 function send2MB(device, buffer){
     onScreenLog(`send2MB`);
     const temperature = buffer.getInt16(0, true) / 100.0;
