@@ -334,6 +334,34 @@ function notificationCallback(e) {
     updateSensorValue(e.target.service.device, accelerometerBuffer);
 }
 
+async function send2MB(device, buffer){
+    const temperature = buffer.getInt16(0, true) / 100.0;
+    const accelX = buffer.getInt16(2, true) / 1000.0;
+    const accelY = buffer.getInt16(4, true) / 1000.0;
+    const accelZ = buffer.getInt16(6, true) / 1000.0;
+    const sw1 = buffer.getInt16(8, true);
+    const sw2 = buffer.getInt16(10, true);
+
+    let url = "https://iot-cloud.motionboard.jp/motionboard/rest/tracking/data/upload/simple?tenant=" + cdl002mb + "&template=" + iot + "&id=" + "l01" + "&temp=" + temperature;
+    var data = {
+        page:"1"
+    };
+    $.ajax({
+        type:'GET',
+        url:url,
+        dataType: 'jsonp',
+        cache: false,
+        scriptCharset: 'utf-8',
+        jsonpCallback:'data',
+        data:data,
+        headers: {
+            "Cookie" : "tenant=cdl002mb"
+        },
+        success:function (data) {
+        }
+    });
+}
+
 async function refreshValues(device) {
     const accelerometerCharacteristic = await getCharacteristic(
         device, USER_SERVICE_UUID, USER_CHARACTERISTIC_NOTIFY_UUID);
@@ -345,6 +373,8 @@ async function refreshValues(device) {
     if (accelerometerBuffer !== null) {
         updateSensorValue(device, accelerometerBuffer);
     }
+
+    send2MB(device, buffer);
 }
 
 function updateSensorValue(device, buffer) {
