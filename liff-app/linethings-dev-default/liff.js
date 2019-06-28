@@ -329,12 +329,12 @@ function onConnectionLostMQTT(responseObject) {
 
 function ws_mqtt(jsonbody) {
     // Create a client instance
-    client = new Paho.MQTT.Client("broker.hivemq.com", 8000, "id_" + parseInt(Math.random() * 100, 10));
+    client = new Paho.MQTT.Client("iot.eclipse.org", 443, "id_" + parseInt(Math.random() * 100, 10));
 
     // set callback handlers
     client.onConnectionLostMQTT = onConnectionLostMQTT;
     var options = {
-        useSSL: false,
+        useSSL: true,
         onSuccess:onConnectMQTT,
         onFailure:doFailMQTT
     }
