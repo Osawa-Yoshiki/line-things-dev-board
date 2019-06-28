@@ -350,7 +350,7 @@ function send2MB(device, buffer){
         jsonpCallback:'data',
         data:data,
         headers: {
-            "Cookie" : "tenant=cdl002mb"
+            'Cookie' : 'tenant=cdl002mb'
         },
         success:function (data) {
             onScreenLog(`success`);
