@@ -359,6 +359,9 @@ function send2MB(device, buffer){
         success:function (data) {
             onScreenLog(`send success`);
         }
+        error: function () {
+            onScreenLog('failure');
+        }
     });
 }
 
