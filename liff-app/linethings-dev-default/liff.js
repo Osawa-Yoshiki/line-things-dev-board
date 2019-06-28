@@ -351,7 +351,7 @@ function send2MB(device, buffer){
         data:data,
         xhrFields: {
             withCredentials: true
-        }
+        },
         headers: {
             'Cookie' : 'tenant=cdl002mb'
         },
