@@ -337,7 +337,7 @@ function send2MB(device, buffer){
     const sw1 = buffer.getInt16(8, true);
     const sw2 = buffer.getInt16(10, true);
     onScreenLog(`test2`);
-    let url = "https://iot-cloud.motionboard.jp/motionboard/rest/tracking/data/upload/simple?tenant=" + cdl002mb + "&template=" + iot + "&id=" + "l01" + "&temp=" + temperature;
+    let url = "https://iot-cloud.motionboard.jp/motionboard/rest/tracking/data/upload/simple?tenant=" + cdl002mb + "&template=" + "iot" + "&id=" + "l01" + "&temp=" + temperature;
     var data = {
         page:"1"
     };
