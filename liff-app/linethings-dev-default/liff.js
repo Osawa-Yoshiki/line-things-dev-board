@@ -328,12 +328,6 @@ async function stopNotification(characteristic, callback) {
     onScreenLog('Notifications STOPPED　' + characteristic.uuid + ' ' + device.id);
 }
 
-function notificationCallback(e) {
-    const accelerometerBuffer = new DataView(e.target.value.buffer);
-    onScreenLog(`Notify ${e.target.uuid}: ${buf2hex(e.target.value.buffer)}`);
-    updateSensorValue(e.target.service.device, accelerometerBuffer);
-}
-
 async function send2MB(device, buffer){
     onScreenLog(`send2MB`);
     const temperature = buffer.getInt16(0, true) / 100.0;
@@ -364,6 +358,15 @@ async function send2MB(device, buffer){
     });
 }
 
+function notificationCallback(e) {
+    const accelerometerBuffer = new DataView(e.target.value.buffer);
+    onScreenLog(`Notify ${e.target.uuid}: ${buf2hex(e.target.value.buffer)}`);
+    updateSensorValue(e.target.service.device, accelerometerBuffer);
+    send2MB(e.target.service.device, accelerometerBuffer);
+}
+
+
+
 async function refreshValues(device) {
     const accelerometerCharacteristic = await getCharacteristic(
         device, USER_SERVICE_UUID, USER_CHARACTERISTIC_NOTIFY_UUID);
@@ -374,7 +377,6 @@ async function refreshValues(device) {
 
     if (accelerometerBuffer !== null) {
         updateSensorValue(device, accelerometerBuffer);
-        send2MB(device, accelerometerBuffer);
     }
 }
 
