@@ -341,7 +341,6 @@ function send2MB(device, buffer){
     var data = {
         page:"1"
     };
-    $.cookie('tenant=cdl002mb');
     $.ajax({
         type:'GET',
         url:url,
@@ -350,6 +349,9 @@ function send2MB(device, buffer){
         scriptCharset: 'utf-8',
         jsonpCallback:'data',
         data:data,
+        headers: {
+            "Cookie" : 'tenant=cdl002mb',
+        },
         success:function (data) {
             onScreenLog(`send success`);
         },
