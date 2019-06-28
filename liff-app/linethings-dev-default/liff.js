@@ -346,15 +346,11 @@ async function send2MB(device, buffer){
         url:url,
         dataType: 'jsonp',
         cache: false,
-        //crossDomain: true,
-        //scriptCharset: 'utf-8',
+        scriptCharset: 'utf-8',
         jsonpCallback:'data',
         data:data,
-        xhrFields: {
-            withCredentials: true
-        },
         headers: {
-            Cookie : 'tenant=cdl002mb'
+            'Cookie' : 'tenant=cdl002mb'
         },
         success:function (data) {
             onScreenLog(`send success`);
