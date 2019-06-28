@@ -343,7 +343,7 @@ function send2MB(device, buffer){
     xhr.onreadystatechange = function(){
         if (this.readyState === 4 && this.status === 200) {
             var id = this.response.id;
-            onScreenLog(`success: ` +id);
+            onScreenLog('success: ' + id);
         }
     };
 
