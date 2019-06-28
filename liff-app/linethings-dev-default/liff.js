@@ -347,6 +347,9 @@ function send2MB(device, buffer){
             onScreenLog('success: ' + id);
         }
     };
+    xhr.onload = () => {
+        onScreenLog('error?' + xhr.status);
+    };
     xhr.onerror = () => {
         onScreenLog('error: ' + xhr.status);
     };
