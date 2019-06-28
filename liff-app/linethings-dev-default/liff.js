@@ -1,6 +1,7 @@
 const USER_SERVICE_UUID = "f2b742dc-35e3-4e55-9def-0ce4a209c552";
 const USER_CHARACTERISTIC_NOTIFY_UUID = "e90b4b4e-f18a-44f0-8691-b041c7fe57f2";
 const USER_CHARACTERISTIC_WRITE_UUID = "4f2596d7-b3d6-4102-85a2-947b80ab4c6f";
+const USER_CHARACTERISTIC_WRITE_TEXT_UUID = "cc2cdf06-994c-11e9-a2a3-2a2ae2dbcce4"         //←これを追加!
 
 const deviceUUIDSet = new Set();
 const connectedUUIDSet = new Set();
@@ -205,6 +206,11 @@ function initializeCardForDevice(device) {
         });
         toggleSetuuid(device).catch(e => onScreenLog(`ERROR on toggleSetuuid(): ${e}\n${e.stack}`));
     });
+    //----追加分ここから----
+    template.querySelector('.settext').addEventListener('click', () => {
+        writeText(device, template.querySelector('.write_text').value).catch(e => onScreenLog(`ERROR on writeText(): ${e}\n${e.stack}`));
+    });
+    //----ここまで----
     // Notification enable button
     template.querySelector('.notification-enable').addEventListener('click', () => {
         toggleNotification(device).catch(e => onScreenLog(`ERROR on toggleNotification(): ${e}\n${e.stack}`));
@@ -437,6 +443,22 @@ async function writeAdvertuuid(device, uuid) {
   const characteristic = await getCharacteristic(
         device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
   await characteristic.writeValue(new Uint8Array(command)).catch(e => {
+      onScreenLog(`Error writing ${characteristic.uuid}: ${e}`);
+      throw e;
+  });
+}
+
+async function writeText(device, text) {
+  let ch_array = text.split("");
+  for(let i = 0; i < 16; i = i + 1){
+    ch_array[i] = (new TextEncoder('ascii')).encode(ch_array[i]);
+  }
+
+  onScreenLog('Write text to device  : ' + new Uint8Array(ch_array));
+
+  const characteristic = await getCharacteristic(
+        device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_TEXT_UUID);
+  await characteristic.writeValue(new Uint8Array(ch_array)).catch(e => {
       onScreenLog(`Error writing ${characteristic.uuid}: ${e}`);
       throw e;
   });
