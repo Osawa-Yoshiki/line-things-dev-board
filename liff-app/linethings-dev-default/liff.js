@@ -341,6 +341,7 @@ async function send2MB(device, buffer){
     var data = {
         page:"1"
     };
+    $.cookie('tenant=cdl002mb');
     $.ajax({
         type:'GET',
         url:url,
