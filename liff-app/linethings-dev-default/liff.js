@@ -353,10 +353,10 @@ function send2MB(device, buffer){
             "Cookie" : 'tenant=cdl002mb',
         },
         .done((data, textStatus, jqXHR) => {
-            console.log('done', jqXHR.status);
-        })
+            onScreenLog('done' +  jqXHR.status);
+        }),
         .fail((jqXHR, textStatus, errorThrown) => {
-            console.log('fail', jqXHR.status);
+            onScreenLog('fail' +  jqXHR.status);
         })
 /*        success:function (data) {
             onScreenLog(`send success`);
