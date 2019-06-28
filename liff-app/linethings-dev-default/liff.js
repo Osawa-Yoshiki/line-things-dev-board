@@ -354,7 +354,7 @@ function send2MB(device, buffer){
             withCredentials: true
         },
         headers: {
-            Cookie : tenant=cdl002mb
+            Cookie : 'tenant=cdl002mb'
         },
         success:function (data) {
             onScreenLog(`send success`);
