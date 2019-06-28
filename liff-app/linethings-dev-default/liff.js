@@ -314,6 +314,38 @@ async function toggleSetuuid(device) {
     onScreenLog('BLE advertising uuid changed.');
 }
 
+  // callback
+function onConnectMQTT() {
+    console.log("onConnect");
+}
+function doFailMQTT(e){
+    console.log(e);
+}
+function onConnectionLostMQTT(responseObject) {
+    if (responseObject.errorCode !== 0) {
+        onScreenLog("MQTT connection lost!");
+    }
+}
+
+function ws_mqtt(jsonbody) {
+    // Create a client instance
+    client = new Paho.MQTT.Client("broker.hivemq.com", 8000, "id_" + parseInt(Math.random() * 100, 10));
+
+    // set callback handlers
+    client.onConnectionLostMQTT = onConnectionLostMQTT;
+    var options = {
+        useSSL: false,
+        onSuccess:onConnectMQTT,
+        onFailure:doFailMQTT
+    }
+
+    // connect the client
+    client.connect(options);
+    message = new Paho.MQTT.Message(jsonbody);
+    message.destinationName = "test/osawa";
+    client.send(message);
+}
+
 async function enableNotification(characteristic, callback) {
     const device = characteristic.service.device;
     characteristic.addEventListener('characteristicvaluechanged', callback);
@@ -336,8 +368,16 @@ function send2MB(device, buffer){
     const accelZ = buffer.getInt16(6, true) / 1000.0;
     const sw1 = buffer.getInt16(8, true);
     const sw2 = buffer.getInt16(10, true);
+    let datetime = Date.now();
+
+    let jsonbody = '{"protocol": "1.0","loginId": "osawa.y","template": "iot","tenant": "cdl002mb","status":[{"time":' + datetime + ',"enabled": "true","values":[{"name":"temp","type":"3","value":' + temperature + '}]}]};
+
+    ws_mqtt(jsonbody);
+
     //onScreenLog(`temperature: ` + temperature);
     //let url = "https://iot-cloud.motionboard.jp/motionboard/rest/tracking/data/upload/simple?tenant=" + "cdl002mb" + "&template=" + "iot" + "&id=" + "l01" + "&temp=" + temperature;
+
+/*
     let url = "https://twilio-osawa.mybluemix.net/sms?temp=" + temperature;
     document.cookie = 'tenant=cdl002mb';
 
@@ -359,7 +399,7 @@ function send2MB(device, buffer){
     xhr.withCredentials = true;
     xhr.setRequestHeader('Cookie', 'tenant=cdl002mb');
     xhr.send();
-
+*/
 
 /*
     var data = {
