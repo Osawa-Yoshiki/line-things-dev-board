@@ -335,6 +335,7 @@ function notificationCallback(e) {
 }
 
 async function send2MB(device, buffer){
+    onScreenLog(`send2MB`);
     const temperature = buffer.getInt16(0, true) / 100.0;
     const accelX = buffer.getInt16(2, true) / 1000.0;
     const accelY = buffer.getInt16(4, true) / 1000.0;
@@ -358,6 +359,7 @@ async function send2MB(device, buffer){
             "Cookie" : "tenant=cdl002mb"
         },
         success:function (data) {
+            onScreenLog(`success`);
         }
     });
 }
