@@ -372,7 +372,7 @@ async function refreshValues(device) {
 
     if (accelerometerBuffer !== null) {
         updateSensorValue(device, accelerometerBuffer);
-        send2MB(device, buffer);
+        send2MB(device, accelerometerBuffer);
     }
 }
 
