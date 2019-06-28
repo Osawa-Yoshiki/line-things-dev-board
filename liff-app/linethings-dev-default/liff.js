@@ -329,7 +329,7 @@ async function stopNotification(characteristic, callback) {
 }
 
 function send2MB(device, buffer){
-    onScreenLog(`send2MB`);
+    //onScreenLog(`send2MB`);
     const temperature = buffer.getInt16(0, true) / 100.0;
     const accelX = buffer.getInt16(2, true) / 1000.0;
     const accelY = buffer.getInt16(4, true) / 1000.0;
@@ -360,6 +360,7 @@ function send2MB(device, buffer){
             onScreenLog(`send success`);
         },
         error: function (xhr, txt, tmsg) {
+	onScreenLog('request url: ' + url);
             onScreenLog('xhr: ' + xhr.status + ' txt: ' + txt + ' tmsg: ' + tmsg.message);
         }
     });
