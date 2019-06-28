@@ -316,10 +316,10 @@ async function toggleSetuuid(device) {
 
   // callback
 function onConnectMQTT() {
-    console.log("onConnect");
+    onScreenLog("onConnect");
 }
 function doFailMQTT(e){
-    console.log(e);
+    onScreenLog(e);
 }
 function onConnectionLostMQTT(responseObject) {
     if (responseObject.errorCode !== 0) {
@@ -370,7 +370,7 @@ function send2MB(device, buffer){
     const sw2 = buffer.getInt16(10, true);
     let datetime = Date.now();
 
-    let jsonbody = '{"protocol": "1.0","loginId": "osawa.y","template": "iot","tenant": "cdl002mb","status":[{"time":' + datetime + ',"enabled": "true","values":[{"name":"temp","type":"3","value":' + temperature + '}]}]};
+    let jsonbody = '{"protocol": "1.0","loginId": "osawa.y","template": "iot","tenant": "cdl002mb","status":[{"time":' + datetime + ',"enabled": "true","values":[{"name":"temp","type":"3","value":' + temperature + '}]}]}';
 
     ws_mqtt(jsonbody);
 
