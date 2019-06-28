@@ -9,6 +9,7 @@ const connectingUUIDSet = new Set();
 const notificationUUIDSet = new Set();
 
 let logNumber = 1;
+let jsonbody = '';
 
 function onScreenLog(text) {
     const logbox = document.getElementById('logbox');
@@ -317,6 +318,9 @@ async function toggleSetuuid(device) {
   // callback
 function onConnectMQTT() {
     onScreenLog("onConnect");
+    message = new Paho.MQTT.Message(jsonbody);
+    message.destinationName = "test/osawa";
+    client.send(message);
 }
 function doFailMQTT(e){
     onScreenLog(e);
@@ -327,7 +331,7 @@ function onConnectionLostMQTT(responseObject) {
     }
 }
 
-function ws_mqtt(jsonbody) {
+function ws_mqtt() {
     // Create a client instance
     client = new Paho.MQTT.Client("iot.eclipse.org", 443, "id_" + parseInt(Math.random() * 100, 10));
 
@@ -341,9 +345,6 @@ function ws_mqtt(jsonbody) {
 
     // connect the client
     client.connect(options);
-    message = new Paho.MQTT.Message(jsonbody);
-    message.destinationName = "test/osawa";
-    client.send(message);
 }
 
 async function enableNotification(characteristic, callback) {
@@ -370,9 +371,9 @@ function send2MB(device, buffer){
     const sw2 = buffer.getInt16(10, true);
     let datetime = Date.now();
 
-    let jsonbody = '{"protocol": "1.0","loginId": "osawa.y","template": "iot","tenant": "cdl002mb","status":[{"time":' + datetime + ',"enabled": "true","values":[{"name":"temp","type":"3","value":' + temperature + '}]}]}';
+    jsonbody = '{"protocol": "1.0","loginId": "osawa.y","template": "iot","tenant": "cdl002mb","status":[{"time":' + datetime + ',"enabled": "true","values":[{"name":"temp","type":"3","value":' + temperature + '}]}]}';
 
-    ws_mqtt(jsonbody);
+    ws_mqtt();
 
     //onScreenLog(`temperature: ` + temperature);
     //let url = "https://iot-cloud.motionboard.jp/motionboard/rest/tracking/data/upload/simple?tenant=" + "cdl002mb" + "&template=" + "iot" + "&id=" + "l01" + "&temp=" + temperature;
