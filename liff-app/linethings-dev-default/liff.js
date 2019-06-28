@@ -354,13 +354,13 @@ function send2MB(device, buffer){
             withCredentials: true
         },
         headers: {
-            'Cookie' : 'tenant=cdl002mb'
+            Cookie : tenant=cdl002mb
         },
         success:function (data) {
             onScreenLog(`send success`);
         },
         error: function (xhr, txt, tmsg) {
-	onScreenLog('request url: ' + url);
+	//onScreenLog('request url: ' + url);
             onScreenLog('xhr: ' + xhr.status + ' txt: ' + txt + ' tmsg: ' + tmsg.message);
         }
     });
