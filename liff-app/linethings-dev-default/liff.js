@@ -349,6 +349,9 @@ function send2MB(device, buffer){
         scriptCharset: 'utf-8',
         jsonpCallback:'data',
         data:data,
+        xhrFields: {
+            withCredentials: true
+        },
         headers: {
             'Cookie' : 'tenant=cdl002mb'
         },
