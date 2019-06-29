@@ -340,6 +340,7 @@ function ws_mqtt() {
     client.onConnectionLostMQTT = onConnectionLostMQTT;
     var options = {
         useSSL: true,
+        timeout: 1,
         onSuccess:onConnectMQTT,
         onFailure:doFailMQTT
     }
