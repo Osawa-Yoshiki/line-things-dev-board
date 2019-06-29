@@ -364,20 +364,6 @@ async function stopNotification(characteristic, callback) {
     onScreenLog('Notifications STOPPED　' + characteristic.uuid + ' ' + device.id);
 }
 
-function sleep(waitSec, callbackFunc) {
-    var spanedSec = 0;
-    var waitFunc = function () {
-        spanedSec++;
-        if (spanedSec >= waitSec) {
-            if (callbackFunc) callbackFunc();
-            return;
-        }
-        clearTimeout(id);
-        id = setTimeout(waitFunc, 1000);
-    };
-    var id = setTimeout(waitFunc, 1000);
-}
-
 async function send2MB(device, buffer){
     onScreenLog(`send2MB toggle1: ` + toggle);
     toggle = !toggle;
@@ -396,9 +382,7 @@ async function send2MB(device, buffer){
 
     jsonbody = '{"protocol": "1.0","loginId": "l01","template": "iot","tenant": "cdl002mb","status":[{"time":' + datetime + ',"enabled": "true","values":[{"name":"temp","type":"3","value":' + temperature + '},{"name":"hash","type":"2","value":"'  + md5 + '"},{"name":"accelX","type":"3","value":' + accelX + '},{"name":"accelY","type":"3","value":' + accelY + '},{"name":"accelZ","type":"3","value":' + accelZ + '},{"name":"sw1","type":"3","value":' + sw1 + '},{"name":"sw2","type":"3","value":' + sw2 + '}]}]}';
 
-    sleep(1, function () {
-        ws_mqtt();
-    });
+    ws_mqtt();
 }
 
 function notificationCallback(e) {
