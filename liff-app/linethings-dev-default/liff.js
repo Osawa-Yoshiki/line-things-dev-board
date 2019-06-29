@@ -10,6 +10,7 @@ const notificationUUIDSet = new Set();
 
 let logNumber = 1;
 let jsonbody = '';
+let toggle = false;
 
 function onScreenLog(text) {
     const logbox = document.getElementById('logbox');
@@ -341,7 +342,6 @@ function ws_mqtt() {
     var options = {
         useSSL: true,
         timeout: 1,
-        keepAliveInterval: 1,
         onSuccess:onConnectMQTT,
         onFailure:doFailMQTT
     }
@@ -364,8 +364,26 @@ async function stopNotification(characteristic, callback) {
     onScreenLog('Notifications STOPPED　' + characteristic.uuid + ' ' + device.id);
 }
 
-function send2MB(device, buffer){
+function sleep(waitSec, callbackFunc) {
+    var spanedSec = 0;
+    var waitFunc = function () {
+        spanedSec++;
+        if (spanedSec >= waitSec) {
+            if (callbackFunc) callbackFunc();
+            return;
+        }
+        clearTimeout(id);
+        id = setTimeout(waitFunc, 1000);
+    };
+    var id = setTimeout(waitFunc, 1000);
+}
+
+async function send2MB(device, buffer){
     //onScreenLog(`send2MB`);
+    toggle != toggle;
+    if (toggle) {
+        return;
+    }
     const temperature = buffer.getInt16(0, true) / 100.0;
     const accelX = buffer.getInt16(2, true) / 1000.0;
     const accelY = buffer.getInt16(4, true) / 1000.0;
@@ -375,59 +393,11 @@ function send2MB(device, buffer){
     let datetime = Date.now();
     let md5 = CybozuLabs.MD5.calc(datetime);
 
-    jsonbody = '{"protocol": "1.0","loginId": "l01","template": "iot","tenant": "cdl002mb","status":[{"time":' + datetime + ',"enabled": "true","values":[{"name":"temp","type":"3","value":' + temperature + '},{"name":"hash","type":"2","value":"'  + md5 + '"}]}]}';
+    jsonbody = '{"protocol": "1.0","loginId": "l01","template": "iot","tenant": "cdl002mb","status":[{"time":' + datetime + ',"enabled": "true","values":[{"name":"temp","type":"3","value":' + temperature + '},{"name":"hash","type":"2","value":"'  + md5 + '"},{"name":"accelX","type":"3","value":' + accelX + '},{"name":"accelY","type":"3","value":' + accelY + '},{"name":"accelZ","type":"3","value":' + accelZ + '},{"name":"sw1","type":"3","value":' + sw1 + '},{"name":"sw2","type":"3","value":' + sw2 + '}]}]}';
 
-    ws_mqtt();
-
-    //onScreenLog(`temperature: ` + temperature);
-    //let url = "https://iot-cloud.motionboard.jp/motionboard/rest/tracking/data/upload/simple?tenant=" + "cdl002mb" + "&template=" + "iot" + "&id=" + "l01" + "&temp=" + temperature;
-
-/*
-    let url = "https://twilio-osawa.mybluemix.net/sms?temp=" + temperature;
-    document.cookie = 'tenant=cdl002mb';
-
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function(){
-        if (this.readyState === 4 && this.status === 200) {
-            var id = this.response.id;
-            onScreenLog('success: ' + id);
-        }
-    };
-    xhr.onload = () => {
-        onScreenLog('error?' + xhr.status);
-    };
-    xhr.onerror = () => {
-        onScreenLog('error: ' + xhr.status);
-    };
-
-    xhr.open('GET', url, true);
-    xhr.withCredentials = true;
-    xhr.setRequestHeader('Cookie', 'tenant=cdl002mb');
-    xhr.send();
-*/
-
-/*
-    var data = {
-        page:"1"
-    };
-    $.ajax({
-        type:'GET',
-        url:url,
-        dataType: 'jsonp',
-        cache: false,
-        scriptCharset: 'utf-8',
-        jsonpCallback:'data',
-        data:data,
-        headers: {
-            "Cookie" : 'tenant=cdl002mb',
-        }
-    }).done((data, textStatus, jqXHR) => {
-        onScreenLog('done' +  jqXHR.status);
-    }).fail((jqXHR, textStatus, errorThrown) => {
-        onScreenLog('fail' +  jqXHR.status);
+    sleep(1, function () {
+        ws_mqtt();
     });
-*/
-
 }
 
 function notificationCallback(e) {
