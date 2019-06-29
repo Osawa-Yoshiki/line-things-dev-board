@@ -380,7 +380,7 @@ function sleep(waitSec, callbackFunc) {
 
 async function send2MB(device, buffer){
     onScreenLog(`send2MB toggle1: ` + toggle);
-    toggle != toggle;
+    toggle = !toggle;
     onScreenLog(`send2MB toggle2: ` + toggle);
     if (toggle) {
         return;
