@@ -321,7 +321,7 @@ function onConnectMQTT() {
     message = new Paho.MQTT.Message(jsonbody);
     message.destinationName = "test/osawa";
     client.send(message);
-    client.disconnect();
+    //client.disconnect();
 }
 function doFailMQTT(e){
     onScreenLog('failed: ' + e.errorMessage + ' code: ' + e.errorCode);
@@ -341,6 +341,8 @@ function ws_mqtt() {
     var options = {
         useSSL: true,
         timeout: 1,
+        keepAliveInterval: 1,
+        reconnect: false,
         onSuccess:onConnectMQTT,
         onFailure:doFailMQTT
     }
