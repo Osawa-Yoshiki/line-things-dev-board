@@ -324,7 +324,7 @@ function onConnectMQTT() {
     client.disconnect();
 }
 function doFailMQTT(e){
-    onScreenLog(e);
+    onScreenLog('failed: ' + e.errorMessage + ' code: ' + e.errorCode);
 }
 function onConnectionLostMQTT(responseObject) {
     if (responseObject.errorCode !== 0) {
