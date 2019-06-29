@@ -380,7 +380,7 @@ async function send2MB(device, buffer){
     let datetime = Date.now();
     let md5 = CybozuLabs.MD5.calc(datetime);
 
-    jsonbody = '{"protocol": "1.0","loginId": "l01","template": "iot","tenant": "cdl002mb","status":[{"time":' + datetime + ',"enabled": "true","values":[{"name":"temp","type":"3","value":' + temperature + '},{"name":"hash","type":"2","value":"'  + md5 + '"},{"name":"accelX","type":"3","value":' + accelX + '},{"name":"accelY","type":"3","value":' + accelY + '},{"name":"accelZ","type":"3","value":' + accelZ + '},{"name":"sw1","type":"3","value":' + sw1 + '},{"name":"sw2","type":"3","value":' + sw2 + '}]}]}';
+    jsonbody = '{"protocol": "1.0","loginId": "2","template": "iot","tenant": "cdl002mb","status":[{"time":' + datetime + ',"enabled": "true","values":[{"name":"temp","type":"3","value":' + temperature + '},{"name":"hash","type":"2","value":"'  + md5 + '"},{"name":"accelX","type":"3","value":' + accelX + '},{"name":"accelY","type":"3","value":' + accelY + '},{"name":"accelZ","type":"3","value":' + accelZ + '},{"name":"sw1","type":"3","value":' + sw1 + '},{"name":"sw2","type":"3","value":' + sw2 + '}]}]}';
 
     ws_mqtt();
 }
