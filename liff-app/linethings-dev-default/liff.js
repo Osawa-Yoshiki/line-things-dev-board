@@ -342,7 +342,6 @@ function ws_mqtt() {
         useSSL: true,
         timeout: 1,
         keepAliveInterval: 1,
-        reconnect: false,
         onSuccess:onConnectMQTT,
         onFailure:doFailMQTT
     }
