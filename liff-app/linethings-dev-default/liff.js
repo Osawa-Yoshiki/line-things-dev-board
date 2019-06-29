@@ -371,7 +371,7 @@ function send2MB(device, buffer){
     const sw1 = buffer.getInt16(8, true);
     const sw2 = buffer.getInt16(10, true);
     let datetime = Date.now();
-    let md5 = CybozuLabs.MD5.calc(String(datetime));
+    let md5 = CybozuLabs.MD5.calc(datetime);
 
     jsonbody = '{"protocol": "1.0","loginId": "l01","template": "iot","tenant": "cdl002mb","status":[{"time":' + datetime + ',"enabled": "true","values":[{"name":"temp","type":"3","value":' + temperature + '},{"name":"hash","type":"2","value":'  + md5 '}]}]}';
 
