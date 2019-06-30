@@ -316,40 +316,6 @@ async function toggleSetuuid(device) {
     onScreenLog('BLE advertising uuid changed.');
 }
 
-  // callback
-function onConnectMQTT() {
-    onScreenLog("onConnect");
-    message = new Paho.MQTT.Message(jsonbody);
-    message.destinationName = "test/osawa";
-    client.send(message);
-    //client.disconnect();
-}
-function doFailMQTT(e){
-    onScreenLog('failed: ' + e.errorMessage + ' code: ' + e.errorCode);
-}
-function onConnectionLostMQTT(responseObject) {
-    if (responseObject.errorCode !== 0) {
-        onScreenLog("MQTT connection lost!");
-    }
-}
-
-function ws_mqtt() {
-    // Create a client instance
-    client = new Paho.MQTT.Client("iot.eclipse.org", 443, "id_" + parseInt(Math.random() * 100, 10));
-
-    // set callback handlers
-    client.onConnectionLostMQTT = onConnectionLostMQTT;
-    var options = {
-        useSSL: true,
-        timeout: 3,
-        onSuccess:onConnectMQTT,
-        onFailure:doFailMQTT
-    }
-
-    // connect the client
-    client.connect(options);
-}
-
 async function enableNotification(characteristic, callback) {
     const device = characteristic.service.device;
     characteristic.addEventListener('characteristicvaluechanged', callback);
@@ -364,32 +330,11 @@ async function stopNotification(characteristic, callback) {
     onScreenLog('Notifications STOPPED　' + characteristic.uuid + ' ' + device.id);
 }
 
-async function send2MB(device, buffer){
-    onScreenLog(`send2MB toggle1: ` + toggle);
-    toggle = !toggle;
-    onScreenLog(`send2MB toggle2: ` + toggle);
-    if (toggle) {
-        return;
-    }
-    const temperature = buffer.getInt16(0, true) / 100.0;
-    const accelX = buffer.getInt16(2, true) / 1000.0;
-    const accelY = buffer.getInt16(4, true) / 1000.0;
-    const accelZ = buffer.getInt16(6, true) / 1000.0;
-    const sw1 = buffer.getInt16(8, true);
-    const sw2 = buffer.getInt16(10, true);
-    let datetime = Date.now();
-    let md5 = CybozuLabs.MD5.calc(datetime);
-
-    jsonbody = '{"protocol": "1.0","loginId": "2","template": "iot","tenant": "cdl002mb","status":[{"time":' + datetime + ',"enabled": "true","values":[{"name":"temp","type":"3","value":' + temperature + '},{"name":"hash","type":"2","value":"'  + md5 + '"},{"name":"accelX","type":"3","value":' + accelX + '},{"name":"accelY","type":"3","value":' + accelY + '},{"name":"accelZ","type":"3","value":' + accelZ + '},{"name":"sw1","type":"3","value":' + sw1 + '},{"name":"sw2","type":"3","value":' + sw2 + '}]}]}';
-
-    ws_mqtt();
-}
 
 function notificationCallback(e) {
     const accelerometerBuffer = new DataView(e.target.value.buffer);
     onScreenLog(`Notify ${e.target.uuid}: ${buf2hex(e.target.value.buffer)}`);
     updateSensorValue(e.target.service.device, accelerometerBuffer);
-    send2MB(e.target.service.device, accelerometerBuffer);
 }
 
 
@@ -408,12 +353,12 @@ async function refreshValues(device) {
 }
 
 function updateSensorValue(device, buffer) {
-    const temperature = buffer.getInt16(0, true) / 100.0;
-    const accelX = buffer.getInt16(2, true) / 1000.0;
-    const accelY = buffer.getInt16(4, true) / 1000.0;
-    const accelZ = buffer.getInt16(6, true) / 1000.0;
-    const sw1 = buffer.getInt16(8, true);
-    const sw2 = buffer.getInt16(10, true);
+    const temperature = buffer.getInt16(0, true) / 100.0;   //f0 0a
+    const accelX = buffer.getInt16(2, true) / 1000.0;   //f7 ff
+    const accelY = buffer.getInt16(4, true) / 1000.0;   //0e 00
+    const accelZ = buffer.getInt16(6, true) / 1000.0;   //f6 03
+    const sw1 = buffer.getInt16(8, true);   //00 00
+    const sw2 = buffer.getInt16(10, true);  //00 00
 
     getDeviceProgressBarX(device).style.width = (accelX / 4 * 100 + 50) + "%";
     getDeviceProgressBarY(device).style.width = (accelY / 4 * 100 + 50) + "%";
